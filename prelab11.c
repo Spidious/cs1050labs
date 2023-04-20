@@ -1,27 +1,29 @@
 #include <stdio.h>
 #include <string.h>
 
-struct _Movie
+// Movie Struct
+typedef struct _Movie
 {
 	char title[256];
 	long gross;
 	int year;
-}; 
-typedef struct _Movie Movie;
+}Movie;
 
-void bubblesort();
-void printArray();
+// Function headers
+void bubblesort(Movie * movies, long size);
+void printArray(Movie * movies, int s);
 
-void bubblesort(struct Movie movies[], long gross)
+
+void bubblesort(Movie * movies, long size)
 {
     int i, j;
-    int temp;
+    Movie temp; // You had "int temp;""
 
-    for(i=0; i<gross-1; i++)
+    for(i=0; i<size-1; i++)
     {
-        for(j=0; j<gross-1-i; j++)
+        for(j=0; j<size-1-i; j++)
         {
-            if(movies[j]>movies[j+1])
+            if(strcmp(movies[j].title, movies[j+1].title)>0)    //You can't do "movies[j] > movies[j+1]". 
             {
                 temp = movies[j];
                 movies[j]=movies[j+1];
@@ -31,13 +33,13 @@ void bubblesort(struct Movie movies[], long gross)
     }
 }
 
-void printArray(struct Movie movies[], int s)
+void printArray(Movie * movies, int s)
 {
     int i;
 
     for (i = 0; i < s; i++)
     {
-        printf("%s\t%ld\t%d\n", movies[i].title, movies[i].gross, movies[i].year);
+        printf("%-30s\t%ld\t%d\n", movies[i].title, movies[i].gross, movies[i].year);   //"I added -30 to where the title is printed to make this look nicer"
     } 
 }
 
@@ -62,6 +64,10 @@ int main(void)
         {"The_Exorcist", 2000000000, 1973},
     };
 
-    printArray(struct Movie movies[], int s);
-    bubblesort(struct Movie movies[], long gross);
+    // sizeof movies is like 4000 because its adding together all the movies sizes
+    // so divide it by the size of each movie variable
+    printArray(movies, sizeof(movies)/sizeof(Movie));
+    bubblesort(movies, sizeof(movies)/sizeof(Movie));
+    puts("\n-------------------------------------------------------\n\n");
+    printArray(movies, sizeof(movies)/sizeof(Movie));
 }
